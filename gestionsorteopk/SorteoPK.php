@@ -3,7 +3,7 @@
     ob_start();
     include '../connect_db.php';
 
-    if (isset($_SESSION['email'])) { ?>
+    if (isset($_SESSION['email'])) {?>
 
 <!DOCTYPE HTML>
 
@@ -12,8 +12,8 @@
 		<title>General</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" type="text/css" href="estilos.css">
-		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" type="text/css" href="../estilos.css">
+		<link rel="stylesheet" href="../assets/css/main.css" />
 		<style type="text/css">
 			#colores{
 					background: black;
@@ -53,75 +53,71 @@
 
 					<section>	
 						<header class="main">
-										<h1>Listado de Usuarios</h1>
+										<h1>Listado de los puntos de parqueo para el presente</h1>
 						</header>
 					<div class="table-responsive">
 
-						<form name="form1" method="post" action="" id="cdr" >
-  									<h3>Buscar Ususario  </h3>
+						<form name="form1" method="get" id="cdr" >
+  									<h3>Listado de los parqueaderos asignados para el presente mes</h3>
       								<p>
-        							<input name="cedula"  type="text" id="busqueda">
-        							<input type="submit" name="Submit" value="buscar" />
+      								<input type="hidden" name="randomize" value="true">
+        							<input type="submit" value="Generar Sorteo" />
         							</p>
       								</p>
 						</form>
-						<form  action="actualizar.php" method="POST">	
-								
-								
-								<?php
-									$busca="";
-									$busca=	isset($_POST['cedula'])?$_POST['cedula']:"";
-									$link=mysqli_connect('localhost','root','','sionweb2');
-									
-									if($busca!=""){
-										//echo "SELECT * FROM usuarios WHERE cedula LIKE '%".$busca."%'";
-									$mostrar="SELECT * FROM usuarios ORDER BY RAND( ) LIMIT 0 , 100  WHERE cedula = '".$busca."'";//cambiar nombre de la tabla de busqueda
-
-									$result=mysqli_query($link,$mostrar);
-								 while($mostrar=mysqli_fetch_array($result)){
-		 							
-
-								  ?>
-								  <table>
+								<table>
 								  <thead>
 								 
 								    <tr>
 								      
-								      <th  id="colores" scope="col">Nombres</th>
-								      <th  id="colores" scope="col">Apellidos</th>
-								       <th  id="colores" scope="col">Teléfono</th>
-								      <th id="colores" scope="col">Celular</th>
+								      <th  id="colores" scope="col">Id</th>
 								      <th  id="colores" scope="col">Email</th>
-								      <th  id="colores" scope="col">Cargo</th>
+								       <th  id="colores" scope="col">Apartamento</th>
+								       <th  id="colores" scope="col">Parqueadero</th>
 								     </tr>
 								  </thead>
 								 <tbody>
+								
+								<?php
+									$link=mysqli_connect('localhost','root','','sionweb2');
+									$d=mt_rand(1,100);
+ 
 									
-									<td id="colores2"><?php echo $mostrar['nombres']; ?></td>
-									<td id="colores2"><?php echo $mostrar['apellidos']; ?></td>
-									<td id="colores2"><?php echo $mostrar['telefono']; ?></td>						
-									<td id="colores2"><?php echo $mostrar['celular']; ?></td>
+										//echo "SELECT * FROM usuarios WHERE cedula LIKE '%".$busca."%'";
+									$mostrar="SELECT * FROM usuariosPK ORDER BY RAND( ) LIMIT 5 ";//cambiar nombre de la tabla de busqueda
+
+									$result=mysqli_query($link,$mostrar);
+								 	while($mostrar=mysqli_fetch_array($result)){
+		 							
+
+								  ?>
+								  <tbody>
+									<tr>
+									<td id="colores2"><?php echo $mostrar['id']; ?></td>
+
 									<td id="colores2"><?php echo $mostrar['email']; ?></td>
-									<td id="colores2"><?php echo $mostrar['cargo']; ?></td>
+									<td id="colores2"><?php echo $mostrar['apartamento']; ?></td>	
+									<td id="colores2"><?php echo $d=mt_rand(1,100); ?></td>						
+									</tr>
 								</tbody>
-								</table>
+
 								
 								  <?php
-									}
+
+									
 
 								}
 								  ?>
+								  </tbody>
+								</table>
    						<table class="table table-dark table-bordered table-striped table-responsive" >
 								  <thead>
 								  
 								    <tr >
 								    
-								      <th scope="col">Nombres</th>
-								      <th scope="col">Apellidos</th>
-								       <th scope="col">Teléfono</th>
-								       <th scope="col">Celular</th>
+								      <th scope="col">Id</th>
 								      <th scope="col">Email</th>
-								      <th scope="col">Cargo</th>
+								       <th scope="col">Apartamentoo</th>
 								     </tr>
 								  </thead>
 								  <tbody>
@@ -129,7 +125,7 @@
 								     <?php 
 								  
 								  $link=mysqli_connect('localhost','root','','sionweb2');
-								  $sql="SELECT * FROM usuarios WHERE cargo != 'administrador'";
+								  $sql="SELECT * FROM usuariosPK WHERE id != ''";
 								  $result=mysqli_query($link,$sql);
 
 								  while($mostrar=mysqli_fetch_array($result)){
@@ -137,12 +133,10 @@
 								  ?>
 								<tbody>
 									
-									<td><?php echo $mostrar['nombres']; ?></td>
-									<td><?php echo $mostrar['apellidos']; ?></td>
-									<td><?php echo $mostrar['telefono']; ?></td>						
-									<td><?php echo $mostrar['celular']; ?></td>
+									<td><?php echo $mostrar['id']; ?></td>
 									<td><?php echo $mostrar['email']; ?></td>
-									<td><?php echo $mostrar['cargo']; ?></td>
+									<td><?php echo $mostrar['apartamento']; ?></td>						
+									
 								</tbody>
 
 								<?php 
@@ -171,10 +165,10 @@
 										<li>
 											<span class="opener">Ingresos Usuarios</span>
 											<ul>
-												<li style="color: black;"><a href="crearuser.php">Crear</a></li>
-												<li style="color: black;"><a href="eliminaruser.php">Eliminar</a></li>
-												<li style="color: black;"><a href="modificaruser.php">Modificar</a></li>
-												<li style="color: black;"><a href="listaruser.php">Listado</a></li>
+												<li style="color: black;"><a href="../gestionusuarios/crearuser.php">Crear</a></li>
+												<li style="color: black;"><a href="../gestionusuarios/eliminaruser.php">Eliminar</a></li>
+												<li style="color: black;"><a href="../gestionusuarios/modificaruser.php">Modificar</a></li>
+												<li style="color: black;"><a href="../gestionusuarios/listaruser.php">Listado</a></li>
 											</ul>
 										</li>
 										<li>
@@ -189,8 +183,8 @@
 										<li>
 											<span class="opener">Puntos de parqueo</span>
 											<ul>
-												<li style="color: black;"><a href="#">Visualizar Punto/parqueo</a></li>
-												<li style="color: black;"><a href="#">Programar Punto/parqueo</a></li>
+												<li style="color: black;"><a href="SorteoPK.php">Visualizar Punto/parqueo</a></li>
+												<li style="color: black;"><a href="../index.php">Programar Punto/parqueo</a></li>
 												
 											</ul>
 										</li>
