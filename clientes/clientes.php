@@ -146,7 +146,7 @@
 										</li>
 										<li><a href="elements.php">Eventos del Conjunto</a></li>
 										
-										<li><a href="quejaspqr.php">Quejas y Reclamos(PQR)</a></li>
+										<li><a href="../gestionpqrs/pqrs_crear.php">Quejas y Reclamos(PQR)</a></li>
 										
 										
 									</ul>
